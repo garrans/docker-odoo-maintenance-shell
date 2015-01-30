@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "In set_root_pw"
+
 if [ -f /.root_pw_set ]; then
 	echo "Root password already set!"
 	exit 0
