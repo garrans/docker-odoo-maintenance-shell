@@ -3,7 +3,7 @@
 #
 # Based on instructions from https://github.com/tutumcloud/tutum-ubuntu/
 #
-FROM ubuntu:latest
+FROM ubuntu:lucid
 MAINTAINER Stephen Garran <stephen@insoproco.com>
 
 # Install packages
