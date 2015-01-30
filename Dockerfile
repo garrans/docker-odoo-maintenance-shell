@@ -19,5 +19,5 @@ ENV AUTHORIZED_KEYS **None**
 VOLUME ["/var/lib/odoo"]
 
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/run.sh"]
 
