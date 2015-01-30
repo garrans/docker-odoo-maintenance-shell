@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "In run.sh"
+
 if [ "${AUTHORIZED_KEYS}" != "**None**" ]; then
     echo "=> Found authorized keys"
     mkdir -p /root/.ssh
