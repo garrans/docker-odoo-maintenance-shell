@@ -16,7 +16,7 @@ RUN chmod +x /*.sh
 
 ENV AUTHORIZED_KEYS **None**
 
-VOLUME  ["/var/lib/odoo"]
+VOLUME ["/var/lib/odoo"]
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
