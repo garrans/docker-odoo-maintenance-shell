@@ -17,7 +17,7 @@ ADD set_root_pw.sh /set_root_pw.sh
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
 
-VOLUME ["${INSTANCE_VOLUME"]
+VOLUME ["${INSTANCE_VOLUME}"]
 
 EXPOSE 22
 CMD ["/run.sh"]
