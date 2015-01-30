@@ -1,45 +1,24 @@
 #
-# Etherpad lite Dockerfile
+# Dockerfile for Odoo-Maintenance Shell
 #
 # Based on instructions from https://github.com/ether/etherpad-lite
 #
+FROM ubuntu:latest
+MAINTAINER Stephen Garran <stephen@insoproco.com>
 
-FROM dockerfile/nodejs
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:screencast' | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-MAINTAINER Johannes Bornhold <johannes@bornhold.name>
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
 
-# Prepare etherpad
-RUN mkdir /src
-WORKDIR /src
+VOLUME  ["/var/lib/odoo"]
 
-# Dependencies based on docs
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    gzip git-core curl python libssl-dev pkg-config build-essential
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
 
-RUN wget https://github.com/ether/etherpad-lite/archive/master.zip &&\
-    unzip master &&\
-    rm -f master.zip &&\
-    mv etherpad-lite-master etherpad &&\
-    sed '/installDeps.sh/d' etherpad/bin/run.sh -i
-
-WORKDIR /src/etherpad
-
-# Install dependencies
-RUN bin/installDeps.sh
-RUN npm install sqlite3
-
-# Add the settings
-ADD config/ /src/etherpad/
-
-# Install plugins
-RUN npm install \
-    ep_headings \
-    ep_monospace_default \
-    ep_print
-
-
-EXPOSE 9001
-VOLUME ["/data"]
-
-CMD ["bin/configure_and_run.sh"]
